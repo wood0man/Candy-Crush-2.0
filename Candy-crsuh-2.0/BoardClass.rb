@@ -6,12 +6,11 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        @board.push([Orb.new(),Orb.new("Red"),Orb.new(),Orb.new("Red"),Orb.new("Red")])
-        4.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+        # @board.push([Orb.new(),Orb.new("Red"),Orb.new(),Orb.new("Red"),Orb.new("Red")])
+        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
 
     end
-
     def printBaord()
         for row in @board
             for element in row
@@ -138,92 +137,154 @@ class Board
         end
 
     end
-
-
     def removeOrbsRowHelper(orbsStartIndex,rowIndex,amount)
 
         case amount
             when 3
-                @board.each_with_index(){|row,i|
-                    row.each_with_index(){|element,j|
-                        if (@board[rowIndex+1][orbsStartIndex]==nil || @board[rowIndex][orbsStartIndex+1]==nil)
-                            @board[rowIndex][orbsStartIndex]=Orb.new();
-                            @board[rowIndex][orbsStartIndex+1]=Orb.new();
-                            @board[rowIndex][orbsStartIndex+2]=Orb.new();
-                            break
+        
+                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                    @board[rowIndex][orbsStartIndex]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+2]=Orb.new()
+                else
+                    @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex];
+                    @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1];
+                    @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+1][orbsStartIndex+2];
+                    
+                    
+                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    #do nothing
+                    else
+                        @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
+                        @board[rowIndex+1][orbsStartIndex+1]=@board[rowIndex+2][orbsStartIndex+1]
+                        @board[rowIndex+1][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
+                    end
+                    
+                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                        #do nothing
                         else
-                            @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex]
-                            @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1]
-
-                            if(@board[rowIndex][orbsStartIndex+2]==nil||@board[rowIndex][orbsStartIndex+2]==nil)
-                                next
-                            else
-                            @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
-                            end
+                            @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
+                            @board[rowIndex+2][orbsStartIndex+1]=@board[rowIndex+3][orbsStartIndex+1]
+                            @board[rowIndex+2][orbsStartIndex+2]=@board[rowIndex+3][orbsStartIndex+2]
                         end
-                    }  
-                
-                }
+
+                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                            #do nothing
+                            else
+                                @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
+                                @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex+4][orbsStartIndex+1]
+                                @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
+                        end
+
+                    @board[rowIndex+4][orbsStartIndex]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
+                end
+                        
+                    
 
 
             when 4
-                @board.each_with_index(){|row,i|
-                    row.each_with_index(){|element,j|
-                        if (@board[rowIndex+1][orbsStartIndex]==nil || @board[rowIndex][orbsStartIndex+1]==nil)
-                            @board[rowIndex][orbsStartIndex]=Orb.new();
-                            @board[rowIndex][orbsStartIndex+1]=Orb.new();
-                            @board[rowIndex][orbsStartIndex+2]=Orb.new();
-                            @board[rowIndex][orbsStartIndex+3]=Orb.new();
-                            break
+                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                    @board[rowIndex][orbsStartIndex]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+2]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+3]=Orb.new()
+                else
+                    @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex];
+                    @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1];
+                    @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+1][orbsStartIndex+2];
+                    @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+1][orbsStartIndex+3];
+                    
+                    
+                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    #do nothing
+                    else
+                        @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
+                        @board[rowIndex+1][orbsStartIndex+1]=@board[rowIndex+2][orbsStartIndex+1]
+                        @board[rowIndex+1][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
+                        @board[rowIndex+1][orbsStartIndex+3]=@board[rowIndex+2][orbsStartIndex+3]
+                    end
+                    
+                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                        #do nothing
                         else
-                            @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex]
-                            @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1]
-                            @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+1]
-
-                            if(@board[rowIndex][orbsStartIndex+2]==nil||@board[rowIndex][orbsStartIndex+2]==nil)
-                                next
-                            else
-                                @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+2]
-                            end
+                            @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
+                            @board[rowIndex+2][orbsStartIndex+1]=@board[rowIndex+3][orbsStartIndex+1]
+                            @board[rowIndex+2][orbsStartIndex+2]=@board[rowIndex+3][orbsStartIndex+2]
+                            @board[rowIndex+2][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+3]
                         end
-                    }   
-                
-                }
+
+                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                            #do nothing
+                            else
+                                @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
+                                @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex+4][orbsStartIndex+1]
+                                @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
+                                @board[rowIndex+3][orbsStartIndex+3]=@board[rowIndex+4][orbsStartIndex+3]
+                        end
+
+                    @board[rowIndex+4][orbsStartIndex]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+3]=Orb.new()
+                end
 
             when 5
-                @board.each_with_index(){|row,i|
-                row.each_with_index(){|element,j|
-                    if (@board[rowIndex+1][orbsStartIndex]==nil || @board[rowIndex][orbsStartIndex+1]==nil)
-                        @board[rowIndex][orbsStartIndex]=Orb.new();
-                        @board[rowIndex][orbsStartIndex+1]=Orb.new();
-                        @board[rowIndex][orbsStartIndex+2]=Orb.new();
-                        @board[rowIndex][orbsStartIndex+3]=Orb.new();
-                        @board[rowIndex][orbsStartIndex+4]=Orb.new();
-                        break
+                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                    @board[rowIndex][orbsStartIndex]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+2]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+3]=Orb.new()
+                    @board[rowIndex][orbsStartIndex+4]=Orb.new()
+                else
+                    @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex];
+                    @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1];
+                    @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+1][orbsStartIndex+2];
+                    @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+1][orbsStartIndex+3];
+                    @board[rowIndex][orbsStartIndex+4]=@board[rowIndex+1][orbsStartIndex+4];
+                    
+                    
+                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    #do nothing
                     else
-                        @board[rowIndex][orbsStartIndex]=@board[rowIndex+1][orbsStartIndex]
-                        @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1]
-                        @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+1]
-                        @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+1]
-
-                        if(@board[rowIndex][orbsStartIndex+2]==nil||@board[rowIndex][orbsStartIndex+2]==nil)
-                            next
-                        else
-                        @board[rowIndex][orbsStartIndex+4]=@board[rowIndex+4][orbsStartIndex+2]
-                        end
+                        @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
+                        @board[rowIndex+1][orbsStartIndex+1]=@board[rowIndex+2][orbsStartIndex+1]
+                        @board[rowIndex+1][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
+                        @board[rowIndex+1][orbsStartIndex+3]=@board[rowIndex+2][orbsStartIndex+3]
+                        @board[rowIndex+1][orbsStartIndex+4]=@board[rowIndex+2][orbsStartIndex+4]
                     end
-                }   
-            
-            }
+                    
+                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                        #do nothing
+                        else
+                            @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
+                            @board[rowIndex+2][orbsStartIndex+1]=@board[rowIndex+3][orbsStartIndex+1]
+                            @board[rowIndex+2][orbsStartIndex+2]=@board[rowIndex+3][orbsStartIndex+2]
+                            @board[rowIndex+2][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+3]
+                            @board[rowIndex+2][orbsStartIndex+4]=@board[rowIndex+3][orbsStartIndex+4]
+                        end
+
+                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                            #do nothing
+                            else
+                                @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
+                                @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex+4][orbsStartIndex+1]
+                                @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
+                                @board[rowIndex+3][orbsStartIndex+3]=@board[rowIndex+4][orbsStartIndex+3]
+                                @board[rowIndex+3][orbsStartIndex+4]=@board[rowIndex+4][orbsStartIndex+4]
+                        end
+
+                    @board[rowIndex+4][orbsStartIndex]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+3]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex+4]=Orb.new()
+                end
         end
 
     end
-
-
-
-
-
-    def removeOrbs(orbsStartIndex,rowIndex,direction,amount)
+   def removeOrbs(orbsStartIndex,rowIndex,direction,amount)
        direction.downcase!
        case direction
        
@@ -231,7 +292,6 @@ class Board
            removeOrbsRowHelper(orbsStartIndex,rowIndex,amount)
        end
     end
-
 end
 
 
@@ -241,14 +301,14 @@ board=Board.new();
 board.printBaord
 print ("Row ")
 
-# row=gets.chomp.to_i
-row=0
+row=gets.chomp.to_i
+# row=0
 print ("Column ")
-# column=gets.chomp.to_i
-column =1
+column=gets.chomp.to_i
+# column =1
 print("Direction ")
-# direction=gets.chomp
-direction="right"
+direction=gets.chomp
+# direction="right"
 board.move(row,column,direction)
 puts
 puts
