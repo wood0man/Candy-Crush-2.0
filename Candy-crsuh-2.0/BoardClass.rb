@@ -6,8 +6,11 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        # @board.push([Orb.new(),Orb.new("Red"),Orb.new(),Orb.new("Red"),Orb.new("Red")])
-        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+        @board.push([Orb.new("Red"),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new("Red"),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new("Red"),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        1.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
 
     end
@@ -25,13 +28,13 @@ class Board
         end
     end
     def anyMatch?()
-        begin
             @board.each_with_index(){|row,i|
             row.each_with_index(){|element,j|
             
-            
+            begin
+
             #to check if the "j" goes out of bounds becasue it causes an error
-            if(@board[j]==nil)
+            if(@board[j].nil?)
                 next
             end
             if (@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3]&&@board[i][j]==@board[i][j+4])
@@ -64,13 +67,14 @@ class Board
                 return true
             end
             
-            
+            rescue NoMethodError
+                puts(" err at index #{i} #{j}")
+                next
+            end 
             }
             
             }
-        rescue => e
-            e.message
-        end
+        
         return false
     end
     def moveAllowed?(row,column,direction)
@@ -297,18 +301,18 @@ end
 
 
 board=Board.new();
-5.times(){
+# 5.times(){
 board.printBaord
 print ("Row ")
 
 row=gets.chomp.to_i
-# row=0
+# row=4
 print ("Column ")
 column=gets.chomp.to_i
 # column =1
 print("Direction ")
 direction=gets.chomp
-# direction="right"
+# direction="up"
 board.move(row,column,direction)
 puts
 puts
@@ -318,5 +322,5 @@ board.printBaord
 puts
 puts
 puts
-}
+# }
 puts board.score()
