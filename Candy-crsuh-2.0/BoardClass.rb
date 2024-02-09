@@ -6,11 +6,11 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        @board.push([Orb.new(),Orb.new(),Orb.new("Purple"),Orb.new("Red"),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new("Red"),Orb.new(),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new("Red"),Orb.new(),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new("Red"),Orb.new(),Orb.new()])
-        1.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
+        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Yellow"),Orb.new()])}
 
 
     end
@@ -73,35 +73,45 @@ class Board
         
         return false
     end
+
+    
+    
     def moveAllowed?(row,column,direction)
-        return true if self.anyMatch?();
-        direction.downcase!;
-        case direction
-        when "up"
-            temp=@board[row-1][column];
-            @board[row-1][column]=@board[row][column];
-            @board[row][column]=temp;
-            puts("can't match");
-        when "down"
+        if (anyMatch?()==true)
+            until anyMatch?()==false
+                anyMatch?()
+            end
+            
+        else    
+            
+            #return true if self.anyMatch?();
+            direction.downcase!;
+            case direction
+            when "up"
+                temp=@board[row-1][column];
+                @board[row-1][column]=@board[row][column];
+                @board[row][column]=temp;
+                puts("can't match");
+            when "down"
 
-            temp=@board[row+1][column];
-            @board[row+1][column]=@board[row][column];
-            @board[row][column]=temp;
-            puts("can't match");
+                temp=@board[row+1][column];
+                @board[row+1][column]=@board[row][column];
+                @board[row][column]=temp;
+                puts("can't match");
 
-        when "right"
-            temp=@board[row][column+1];
-            @board[row][column+1]=@board[row][column];
-            @board[row][column]=temp;
-            puts("can't match");
+            when "right"
+                temp=@board[row][column+1];
+                @board[row][column+1]=@board[row][column];
+                @board[row][column]=temp;
+                puts("can't match");
 
-        when "left"
-            temp=@board[row][column];
-            @board[row][column]=@board[row][column-1];
-            @board[row][column-1]=temp;
-            puts("can't match");
+            when "left"
+                temp=@board[row][column];
+                @board[row][column]=@board[row][column-1];
+                @board[row][column-1]=temp;
+                puts("can't match");
+            end
         end
-        
     end
     def move(row,column,direction)
         direction.downcase!
@@ -366,7 +376,7 @@ board.printBaord
 print ("Row ")
 
 # row=gets.chomp.to_i
-row=0
+row=4
 print ("Column ")
 # column=gets.chomp.to_i
 column =3
