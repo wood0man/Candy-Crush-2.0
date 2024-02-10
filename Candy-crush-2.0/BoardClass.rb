@@ -6,11 +6,11 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
-        @board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])
-        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Yellow"),Orb.new()])}
+        @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Puprle"),Orb.new("Yellow")])
+        @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("puprle")])
+        @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Green"),Orb.new("Blue")])
+        @board.push([Orb.new("Purple"),Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Yellow")])
+        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Yellow"),Orb.new("Yellow")])}
 
 
     end
@@ -77,11 +77,12 @@ class Board
     
     
     def moveAllowed?(row,column,direction)
-        if (anyMatch?()==true)
+        
+        if (anyMatch?())
             until anyMatch?()==false
-                anyMatch?()
+                
             end
-            
+            return true
         else    
             
             #return true if self.anyMatch?();
