@@ -1,7 +1,5 @@
-a=1
-3.times(){
-
-puts(a)
-a+=1
-}
-puts(a)
+require_relative("OrbsClass")
+require_relative("BoardClass")
+board=Board.new()
+board2=board.dup()
+board2.printBaord()

@@ -6,13 +6,14 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Puprle"),Orb.new("Yellow")])
-        @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("puprle")])
-        @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Green"),Orb.new("Blue")])
-        @board.push([Orb.new("Purple"),Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Yellow")])
-        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Yellow"),Orb.new("Yellow")])}
+        # @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Puprle"),Orb.new("Yellow")])
+        # @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Purple")])
+        # @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Blue")])
+        # @board.push([Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple")])
+        # 1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Green"),Orb.new("Purple")])}
+        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
-
+    initialAnyMatch?();
     end
     def printBaord()
         for row in @board
@@ -23,64 +24,122 @@ class Board
             else
                 print(element," |  ")
             end
+            
             end
             puts
         end
     end
+    def initialAnyMatch?
+        @board.each_with_index(){|row,i|
+            row.each_with_index(){|element,j|
+            
+            if (@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3]&&@board[i][j]==@board[i][j+4])
+               
+                removeOrbs(j,i,j,"row",5)
+                
+            elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3])
+          
+                removeOrbs(j,i,j,"row",4)
+                
+            elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2])
+                removeOrbs(j,i,j,"row",3)
+                
+            elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i]&&@board[j][i]==@board[j+4][i])
+                
+                removeOrbs(j,i,i,"column",5)
+                return true
+            elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i])
+                
+                removeOrbs(j,i,i,"column",4)
+                
+            elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i])
+                
+                removeOrbs(j,i,i,"column",3)
+                
+            end
+            
+            
+            }
+            
+        }
+       
+    
+    end
     def anyMatch?()
+            # puts("In the begining of the anymatch?")
             @board.each_with_index(){|row,i|
             row.each_with_index(){|element,j|
             begin
             if (@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3]&&@board[i][j]==@board[i][j+4])
                 @score+=5
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in row for 5 points")
                 removeOrbs(j,i,j,"row",5)
+                # puts("Reached the return")
                 return true
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3])
                 @score+=4
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in row for 4 points")
                 removeOrbs(j,i,j,"row",4)
+                # puts("Reached the return")
                 return true
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2])
                 @score+=3
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in row for 3 points")
                 removeOrbs(j,i,j,"row",3)
+                # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i]&&@board[j][i]==@board[j+4][i])
                 @score+=5
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in column for 5 points")
                 removeOrbs(j,i,i,"column",5)
+                # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i])
                 @score+=4 
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in column for 4 points")
                 removeOrbs(j,i,i,"column",4)
+                # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i])
                 @score+=3
                 puts("Match!!")
+                puts("Match at i:#{i} j:#{j} in column for 3 points")
                 removeOrbs(j,i,i,"column",3)
+                # puts("Reached the return")
                 return true
             end
             
-            rescue NoMethodError
-                
+            rescue NoMethodError =>e
+                puts("#{e.message()}")
+                puts("Error at i:#{i} j:#{j} in orb #{@board[j][i]}")
+
                 next
             end 
-            }
+            # print(@board[j][i]," ",@board[j+1][i]," ",@board[j+2][i])
+            # puts
             
             }
-        
+
+            
+            }
+        # puts("Reached the return of the anymatch")
         return false
     end
 
     
     
     def moveAllowed?(row,column,direction)
+        # puts("In the begining of the moveAllowed?")
+        puts
         
         if (anyMatch?())
             until anyMatch?()==false
-                
+                #do nothing
             end
             return true
         else    
@@ -113,8 +172,10 @@ class Board
                 puts("can't match");
             end
         end
+        # puts("reached the return of the moveAllowed?")
     end
     def move(row,column,direction)
+    # puts("In the begining of the move")
         direction.downcase!
 
         case direction
@@ -144,16 +205,17 @@ class Board
             @board[row][column]=@board[row][column-1]
             @board[row][column-1]=temp
             
+            puts
+            puts
             self.moveAllowed?(row,column,direction)
         end
-
+        # puts("Reached the return of the move")
     end
     def removeOrbsRowHelper(orbsStartIndex,rowIndex,amount)
-
+        # puts("In the begining of the rowHelper?")
         case amount
             when 3
-        
-                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                if(@board[rowIndex+1]==nil)
                     @board[rowIndex][orbsStartIndex]=Orb.new()
                     @board[rowIndex][orbsStartIndex+1]=Orb.new()
                     @board[rowIndex][orbsStartIndex+2]=Orb.new()
@@ -163,7 +225,7 @@ class Board
                     @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+1][orbsStartIndex+2];
                     
                     
-                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    if(@board[rowIndex+2]==nil)
                     #do nothing
                     else
                         @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
@@ -171,7 +233,7 @@ class Board
                         @board[rowIndex+1][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
                     end
                     
-                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                    if(@board[rowIndex+3]==nil)
                         #do nothing
                         else
                             @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
@@ -179,7 +241,7 @@ class Board
                             @board[rowIndex+2][orbsStartIndex+2]=@board[rowIndex+3][orbsStartIndex+2]
                         end
 
-                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                        if(@board[rowIndex+4]==nil)
                             #do nothing
                             else
                                 @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
@@ -187,16 +249,16 @@ class Board
                                 @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
                         end
 
-                    @board[rowIndex+4][orbsStartIndex]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
+                    @board[rowIndex-1][orbsStartIndex]=Orb.new()
+                    @board[rowIndex-1][orbsStartIndex+1]=Orb.new()
+                    @board[rowIndex-1][orbsStartIndex+2]=Orb.new()
                 end
                         
                     
 
 
             when 4
-                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                if(@board[rowIndex+1]==nil)
                     @board[rowIndex][orbsStartIndex]=Orb.new()
                     @board[rowIndex][orbsStartIndex+1]=Orb.new()
                     @board[rowIndex][orbsStartIndex+2]=Orb.new()
@@ -208,7 +270,7 @@ class Board
                     @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+1][orbsStartIndex+3];
                     
                     
-                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    if(@board[rowIndex+2]==nil)
                     #do nothing
                     else
                         @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
@@ -217,7 +279,7 @@ class Board
                         @board[rowIndex+1][orbsStartIndex+3]=@board[rowIndex+2][orbsStartIndex+3]
                     end
                     
-                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                    if(@board[rowIndex+3]==nil)
                         #do nothing
                         else
                             @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
@@ -226,23 +288,23 @@ class Board
                             @board[rowIndex+2][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+3]
                         end
 
-                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                        if(@board[rowIndex+4]==nil)
                             #do nothing
                             else
-                                @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
-                                @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex+4][orbsStartIndex+1]
-                                @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
-                                @board[rowIndex+3][orbsStartIndex+3]=@board[rowIndex+4][orbsStartIndex+3]
+                                @board[rowIndex+3][orbsStartIndex]=@board[rowIndex-1][orbsStartIndex]
+                                @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex-1][orbsStartIndex+1]
+                                @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex-1][orbsStartIndex+2]
+                                @board[rowIndex+3][orbsStartIndex+3]=@board[rowIndex-1][orbsStartIndex+3]
                         end
 
-                    @board[rowIndex+4][orbsStartIndex]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+3]=Orb.new()
+                    @board[-1][orbsStartIndex]=Orb.new()
+                    @board[-1][orbsStartIndex+1]=Orb.new()
+                    @board[-1][orbsStartIndex+2]=Orb.new()
+                    @board[-1][orbsStartIndex+3]=Orb.new()
                 end
 
             when 5
-                if(@board[rowIndex+1][orbsStartIndex].nil?)
+                if(@board[rowIndex+1]==nil)
                     @board[rowIndex][orbsStartIndex]=Orb.new()
                     @board[rowIndex][orbsStartIndex+1]=Orb.new()
                     @board[rowIndex][orbsStartIndex+2]=Orb.new()
@@ -253,49 +315,53 @@ class Board
                     @board[rowIndex][orbsStartIndex+1]=@board[rowIndex+1][orbsStartIndex+1];
                     @board[rowIndex][orbsStartIndex+2]=@board[rowIndex+1][orbsStartIndex+2];
                     @board[rowIndex][orbsStartIndex+3]=@board[rowIndex+1][orbsStartIndex+3];
-                    @board[rowIndex][orbsStartIndex+4]=@board[rowIndex+1][orbsStartIndex+4];
+                    @board[rowIndex][orbsStartIndex+4]=@board[rowIndex+1][orbsStartIndex-1];
                     
                     
-                    if(@board[rowIndex+2][orbsStartIndex].nil?)
+                    if(@board[rowIndex+2]==nil)
                     #do nothing
                     else
                         @board[rowIndex+1][orbsStartIndex]=@board[rowIndex+2][orbsStartIndex]
                         @board[rowIndex+1][orbsStartIndex+1]=@board[rowIndex+2][orbsStartIndex+1]
                         @board[rowIndex+1][orbsStartIndex+2]=@board[rowIndex+2][orbsStartIndex+2]
                         @board[rowIndex+1][orbsStartIndex+3]=@board[rowIndex+2][orbsStartIndex+3]
-                        @board[rowIndex+1][orbsStartIndex+4]=@board[rowIndex+2][orbsStartIndex+4]
+                        @board[rowIndex+1][orbsStartIndex-1]=@board[rowIndex+2][orbsStartIndex-1]
                     end
                     
-                    if(@board[rowIndex+3][orbsStartIndex].nil?)
+                    if(@board[rowIndex+3]==nil)
                         #do nothing
                         else
                             @board[rowIndex+2][orbsStartIndex]=@board[rowIndex+3][orbsStartIndex]
                             @board[rowIndex+2][orbsStartIndex+1]=@board[rowIndex+3][orbsStartIndex+1]
                             @board[rowIndex+2][orbsStartIndex+2]=@board[rowIndex+3][orbsStartIndex+2]
                             @board[rowIndex+2][orbsStartIndex+3]=@board[rowIndex+3][orbsStartIndex+3]
-                            @board[rowIndex+2][orbsStartIndex+4]=@board[rowIndex+3][orbsStartIndex+4]
+                            @board[rowIndex+2][orbsStartIndex-1]=@board[rowIndex+3][orbsStartIndex-1]
                         end
 
-                        if(@board[rowIndex+4][orbsStartIndex].nil?)
+                        if(@board[rowIndex+4]==nil)
                             #do nothing
                             else
                                 @board[rowIndex+3][orbsStartIndex]=@board[rowIndex+4][orbsStartIndex]
                                 @board[rowIndex+3][orbsStartIndex+1]=@board[rowIndex+4][orbsStartIndex+1]
                                 @board[rowIndex+3][orbsStartIndex+2]=@board[rowIndex+4][orbsStartIndex+2]
                                 @board[rowIndex+3][orbsStartIndex+3]=@board[rowIndex+4][orbsStartIndex+3]
-                                @board[rowIndex+3][orbsStartIndex+4]=@board[rowIndex+4][orbsStartIndex+4]
+                                @board[rowIndex+3][orbsStartIndex-1]=@board[rowIndex-1][orbsStartIndex-1]
                         end
 
                     @board[rowIndex+4][orbsStartIndex]=Orb.new()
                     @board[rowIndex+4][orbsStartIndex+1]=Orb.new()
                     @board[rowIndex+4][orbsStartIndex+2]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+3]=Orb.new()
-                    @board[rowIndex+4][orbsStartIndex+4]=Orb.new()
+                    @board[rowIndex+4][orbsStartIndex-2]=Orb.new()
+                    @board[rowIndex-1][orbsStartIndex-1]=Orb.new()
                 end
+                
         end
+        # puts("Reached the return of rowHelper ")
+        
 
     end
     def removeOrbsColumnHelper(orbsStartIndex,columnIndex,amount)
+        # puts("In the begining of the columnHelper?")
         case amount
         when 3
 
@@ -334,7 +400,7 @@ class Board
             
             case orbsStartIndex
             when 0
-                @board[orbsStartIndex][columnIndex]=@board[orbsStartIndex+4][columnIndex]
+                @board[orbsStartIndex][columnIndex]=@board[orbsStartIndex-1][columnIndex]
 
                 orbsStartIndex+=1
                 4.times(){
@@ -353,11 +419,14 @@ class Board
             @board[orbsStartIndex+1][columnIndex]=Orb.new()
             @board[orbsStartIndex+2][columnIndex]=Orb.new()
             @board[orbsStartIndex+3][columnIndex]=Orb.new()
-            @board[orbsStartIndex+4][columnIndex]=Orb.new()
+            @board[orbsStartIndex4][columnIndex]=Orb.new()
 
         end
+        # puts("Reached the return of columnHelper")
+        
     end
    def removeOrbs(orbsStartIndex,rowIndex,columnIndex,direction,amount)
+    # puts("In the begining of the removeOrbs")
        direction.downcase!
        case direction
        
@@ -366,24 +435,39 @@ class Board
         when "column"
             removeOrbsColumnHelper(orbsStartIndex,columnIndex,amount)
         end
+        # puts("Reached the return of removeOrbs")
+        
     end
+    def vertualAnyMatch?()
+    
+    end
+    def self.vertualMove(row,column,direction)
+    copy=@board.dup()
+
+    
+    
+    end
+    
+
+
+
 end
 
 
 
 board=Board.new();
-# 5.times(){
 board.printBaord
-print ("Row ")
+5.times(){
 
-# row=gets.chomp.to_i
-row=4
+ print ("Row ")
+row=gets.chomp.to_i
+# row=1
 print ("Column ")
-# column=gets.chomp.to_i
-column =3
+column=gets.chomp.to_i
+# column =4
 print("Direction ")
-# direction=gets.chomp
-direction="left"
+direction=gets.chomp
+# direction="down"
 board.move(row,column,direction)
 puts
 puts
@@ -393,5 +477,5 @@ board.printBaord
 puts
 puts
 puts
-# }
+}
 puts board.score()

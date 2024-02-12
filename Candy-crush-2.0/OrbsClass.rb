@@ -42,3 +42,8 @@ class Orb
     end
 end
 
+class NilClass
+def [](a=[])
+return nil
+end
+end
