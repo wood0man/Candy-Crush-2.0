@@ -46,4 +46,5 @@ class NilClass
 def [](a=[])
 return nil
 end
+
 end

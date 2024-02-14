@@ -6,30 +6,45 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        # @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Puprle"),Orb.new("Yellow")])
-        # @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Purple")])
-        # @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Blue")])
-        # @board.push([Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple")])
-        # 1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new(),Orb.new("Green"),Orb.new("Purple")])}
-        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+        @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow")])
+        @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Blue"),Orb.new("Red")])
+        @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Blue")])
+        @board.push([Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple")])
+        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Red"),Orb.new("Green"),Orb.new("Purple")])}
+        # 5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
     initialAnyMatch?();
+    doesBoardHasAPotionalMatch?()
     end
     def printBaord()
-        for row in @board
-            for element in row
+        
+        @board.each_with_index(){|row,i|
+            row.each_with_index(){|element,j|
+                if(element.color=="Red"||element.color=="Blue")
+                    print(element,"  |   ")
+                else
+                    print(element," |  ")
             
-            if (element.color=="Red"||element.color=="Blue")
-                print(element,"  |   ")
-            else
-                print(element," |  ")
-            end
-            
-            end
+                end
+            }   
             puts
-        end
+        }
+        
+        
+        # for row in @board
+        #     for element in row
+            
+        #     if (element.color=="Red"||element.color=="Blue")
+        #         print(element,"  |   ")
+        #     else
+        #         print(element," |  ")
+        #     end
+            
+        #     end
+        #     puts
+        # end
     end
-    def initialAnyMatch?
+    def initialAnyMatch?()
         @board.each_with_index(){|row,i|
             row.each_with_index(){|element,j|
             
@@ -47,7 +62,7 @@ class Board
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i]&&@board[j][i]==@board[j+4][i])
                 
                 removeOrbs(j,i,i,"column",5)
-                return true
+                
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i])
                 
                 removeOrbs(j,i,i,"column",4)
@@ -438,36 +453,153 @@ class Board
         # puts("Reached the return of removeOrbs")
         
     end
-    def vertualAnyMatch?()
-    
+    def vertualAnyMatch?(copy)
+       
+            @board.each_with_index(){|row,i|
+                row.each_with_index(){|element,j|
+                
+                if (copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2]&& copy[i][j]==copy[i][j+3]&&copy[i][j]==copy[i][j+4])
+                   puts("Match at index i#{i} j#{j}")
+                    return true
+                    
+                elsif(copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2]&& copy[i][j]==copy[i][j+3])
+                    puts("Match at index i#{i} j#{j}")
+                    return true
+                    
+                elsif(copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2])
+                    puts("Match at index i#{i} j#{j}")
+                    return true
+                    
+                elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i]&&copy[j][i]==copy[j+3][i]&&copy[j][i]==copy[j+4][i])
+                    puts("Match at index i#{i} j#{j}")
+                    return true                    
+                elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i]&&copy[j][i]==copy[j+3][i])
+                    puts("Match at index i#{i} j#{j}")
+                    return true
+                    
+                elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i])
+                    puts("Match at index i#{i} j#{j}")
+                    return true
+                    
+                end
+                
+                
+                }
+                
+            }
+           
+        return false
+        
     end
-    def self.vertualMove(row,column,direction)
-    copy=@board.dup()
+    def vertualMoveAllowed(row,column,direction,copy)
+        
+        
+        return true if vertualAnyMatch?(copy)
+            
+            
+            
+            direction.downcase!;
+            case direction
+            when "up"
+                temp=copy[row-1][column];
+                copy[row-1][column]=copy[row][column];
+                copy[row][column]=temp;
+                return false
+            when "down"
 
-    
-    
+                temp=copy[row+1][column];
+                copy[row+1][column]=copy[row][column];
+                copy[row][column]=temp;
+                return false
+
+            when "right"
+                temp=copy[row][column+1];
+                copy[row][column+1]=copy[row][column];
+                copy[row][column]=temp;
+                return false
+
+            when "left"
+                temp=copy[row][column];
+                copy[row][column]=copy[row][column-1];
+                copy[row][column-1]=temp;
+               return false
+            end
+        end
+        def vertualMove(row,column,direction)
+            copy=@board.dup()
+        
+            
+            direction.downcase!
+        
+            case direction
+            when "up"
+                temp=copy[row-1][column];
+                copy[row-1][column]=copy[row][column];
+                copy[row][column]=temp;
+                
+                return vertualMoveAllowed(row,column,direction,copy)
+        
+            when "down"
+                temp=copy[row+1][column];
+                copy[row+1][column]=copy[row][column];
+                copy[row][column]=temp
+                
+                return vertualMoveAllowed(row,column,direction,copy)
+                
+            when "right"
+                temp=copy[row][column+1]
+                copy[row][column+1]=copy[row][column]
+                copy[row][column]=temp
+                
+                return vertualMoveAllowed(row,column,direction,copy)
+        
+            when "left"
+                temp=copy[row][column]
+                copy[row][column]=copy[row][column-1]
+                copy[row][column-1]=temp
+                
+                return vertualMoveAllowed(row,column,direction,copy)
+            end
+           
+            end
+            
+        def doesBoardHasAPotionalMatch?()
+            @board.each_with_index(){|row,i|
+                row.each_with_index(){|element,j|
+        
+                return true if vertualMove(i,j,"up")
+                return true if vertualMove(i,j,"right")
+                return true if vertualMove(i,j,"left")
+                return true if vertualMove(i,j,"down")
+                    
+                }
+        
+        
+            }
+            puts("There are no potional matches in the board. let's fix that")
+            return false
+        end  
     end
     
 
 
 
-end
 
 
 
 board=Board.new();
 board.printBaord
-5.times(){
+# 5.times(){
 
  print ("Row ")
-row=gets.chomp.to_i
-# row=1
+# row=gets.chomp.to_i
+row=1
 print ("Column ")
-column=gets.chomp.to_i
-# column =4
+# column=gets.chomp.to_i
+column =4
 print("Direction ")
-direction=gets.chomp
-# direction="down"
+# direction=gets.chomp
+direction="down"
 board.move(row,column,direction)
 puts
 puts
@@ -477,5 +609,5 @@ board.printBaord
 puts
 puts
 puts
-}
+# }
 puts board.score()
