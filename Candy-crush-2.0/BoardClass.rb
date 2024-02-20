@@ -6,14 +6,18 @@ class Board
     def initialize()
         @score=0
         @board=[]
-        # @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow")])
-        # @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Blue"),Orb.new("Red")])
-        # @board.push([Orb.new("Green"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Blue")])
-        # @board.push([Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple")])
-        # 1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Red"),Orb.new("Green"),Orb.new("Purple")])}
-        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+        @board.push([Orb.new("Blue"),Orb.new("Purple"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow")])
+        @board.push([Orb.new("Yellow"),Orb.new("Green"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Red")])
+        @board.push([Orb.new("Red"),Orb.new("Red"),Orb.new("Blue"),Orb.new("Yellow"),Orb.new("Blue")])
+        @board.push([Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple"),Orb.new("Green"),Orb.new("Purple")])
+        1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Red"),Orb.new("Green"),Orb.new("Purple")])}
+        # 5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
-   
+       if(doesBoardHasAPotionalMatch?()==false)
+            puts("There are no matches in the board. Let's fix that!! Refresh!!")
+            refresh()
+       end
+
     end
     def printBaord()
         
@@ -135,8 +139,8 @@ class Board
             end
             
             rescue NoMethodError =>e
-                puts("#{e.message()}")
-                puts("Error at i:#{i} j:#{j} in orb #{@board[j][i]}")
+                # puts("#{e.message()}")
+                # puts("Error at i:#{i} j:#{j} in orb #{@board[j][i]}")
 
                 next
             end 
@@ -200,6 +204,9 @@ class Board
 
         case direction
         when "up"
+            if (@board[row-1][column]==nil)
+                return
+            end
             temp=@board[row-1][column];
             @board[row-1][column]=@board[row][column];
             @board[row][column]=temp;
@@ -207,6 +214,9 @@ class Board
             self.moveAllowed?(row,column,direction)
 
         when "down"
+            if (@board[row+1][column]==nil)
+                return
+            end
             temp=@board[row+1][column];
             @board[row+1][column]=@board[row][column];
             @board[row][column]=temp
@@ -214,6 +224,9 @@ class Board
             self.moveAllowed?(row,column,direction)
             
         when "right"
+            if (@board[row][column+1]==nil)
+                return
+            end
             temp=@board[row][column+1]
             @board[row][column+1]=@board[row][column]
             @board[row][column]=temp
@@ -221,12 +234,14 @@ class Board
             self.moveAllowed?(row,column,direction)
 
         when "left"
+            if (@board[row][column-1]==nil)
+                return
+            end
             temp=@board[row][column]
             @board[row][column]=@board[row][column-1]
             @board[row][column-1]=temp
             
-            puts
-            puts
+            
             self.moveAllowed?(row,column,direction)
         end
         # puts("Reached the return of the move")
@@ -438,8 +453,8 @@ class Board
             @board[orbsStartIndex][columnIndex]=Orb.new()
             @board[orbsStartIndex+1][columnIndex]=Orb.new()
             @board[orbsStartIndex+2][columnIndex]=Orb.new()
-            @board[orbsStartIndex+3][columnIndex]=Orb.new()
-            @board[orbsStartIndex4][columnIndex]=Orb.new()
+            @board[orbsStartIndex-2][columnIndex]=Orb.new()
+            @board[orbsStartIndex-1][columnIndex]=Orb.new()
 
         end
         # puts("Reached the return of columnHelper")
@@ -458,8 +473,171 @@ class Board
         # puts("Reached the return of removeOrbs")
         
     end
+    def doesBoardHasAPotionalMatch?()
+        copy=@board.dup();
+        copy.each_with_index(){|row,i|
+            row.each_with_index(){|element,j|
+                if (copyMove(i,j,"up",copy))
+                    return true
+                elsif(copyMove(i,j,"down",copy))
+                    return true
+                elsif(copyMove(i,j,"right",copy))
+                    return true
+                elsif(copyMove(i,j,"left",copy))
+                    return true
+                end
+            }
+        }
+        return false
     
     end
+    def copyMove(row,column,direction,copy)
+
+        direction.downcase!
+
+        case direction
+            
+        when "up"
+            if(copy[row-1][column]==nil)
+                return false
+            end
+            temp=copy[row-1][column];
+            copy[row-1][column]=copy[row][column];
+            copy[row][column]=temp;
+            
+            copyMoveAllowed(row,column,direction,copy)
+
+        when "down"
+            if(copy[row+1][column]==nil)
+                return false
+            end
+            temp=copy[row+1][column];
+            copy[row+1][column]=copy[row][column];
+            copy[row][column]=temp
+            
+            copyMoveAllowed(row,column,direction,copy)
+            
+        when "right"
+            if(copy[row][column+1]==nil)
+                return false
+            end
+            temp=copy[row][column+1]
+            copy[row][column+1]=copy[row][column]
+            copy[row][column]=temp
+            
+            copyMoveAllowed(row,column,direction,copy)
+
+        when "left"
+            if(copy[row][column-1]==nil)
+                return false
+            end
+            temp=copy[row][column]
+            copy[row][column]=copy[row][column-1]
+            copy[row][column-1]=temp
+            
+            copyMoveAllowed(row,column,direction,copy)
+    end
+
+    
+
+
+    end
+    def copyMoveAllowed(row,column,direction,copy)
+        
+        return true if copyAnyMatch?(copy);
+        direction.downcase!;
+       
+       
+        case direction
+        when "up"
+            if(copy[row-1][column]==nil)
+                return false
+            end
+            temp=copy[row-1][column];
+            copy[row-1][column]=copy[row][column];
+            copy[row][column]=temp;
+            return false
+        when "down"
+            if(copy[row+1][column]==nil)
+                return false
+            end
+            temp=copy[row+1][column];
+            copy[row+1][column]=copy[row][column];
+            copy[row][column]=temp;
+            return false
+        when "right"
+            if(copy[row][column+1]==nil)
+                return false
+            end
+            temp=copy[row][column+1];
+            copy[row][column+1]=copy[row][column];
+            copy[row][column]=temp;
+            return false
+        when "left"
+            if(copy[row][column-1]==nil)
+                return false
+            end
+            temp=copy[row][column];
+            copy[row][column]=copy[row][column-1];
+            copy[row][column-1]=temp;
+            return false
+        end
+    end
+    def copyAnyMatch?(copy)
+        copy.each_with_index(){|row,i|
+        row.each_with_index(){|element,j|
+        begin
+        if (copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2]&& copy[i][j]==copy[i][j+3]&&copy[i][j]==copy[i][j+4])
+           
+            
+            
+            return true
+        elsif(copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2]&&copy[i][j]==copy[i][j+3])
+            
+           
+            
+            return true
+        elsif(copy[i][j]==copy[i][j+1]&&copy[i][j]==copy[i][j+2])
+            
+            
+            return true
+        elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i]&&copy[j][i]==copy[j+3][i]&&copy[j][i]==copy[j+4][i])
+            
+            
+            return true
+        elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i]&&copy[j][i]==copy[j+3][i])
+           
+
+            return true
+        elsif(copy[j][i]==copy[j+1][i]&&copy[j][i]==copy[j+2][i])
+            
+
+            return true
+        end
+        
+        rescue NoMethodError =>e
+            # puts("#{e.message()}")
+            # puts("Error at i:#{i} j:#{j} in orb #{@board[j][i]}")
+
+            next
+        end 
+        # print(@board[j][i]," ",@board[j+1][i]," ",@board[j+2][i])
+        # puts
+        
+        }
+
+        
+        }
+    # puts("Reached the return of the anymatch")
+    return false
+    end
+    
+    def refresh()
+        5.times(){@board.pop()}
+        5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
+
+    end
+end
     
 
 
