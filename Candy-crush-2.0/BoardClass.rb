@@ -13,70 +13,66 @@ class Board
         1.times(){@board.push([Orb.new("Yellow"),Orb.new("Yellow"),Orb.new("Red"),Orb.new("Green"),Orb.new("Purple")])}
         # 5.times(){@board.push([Orb.new(),Orb.new(),Orb.new(),Orb.new(),Orb.new()])}
 
-       if(doesBoardHasAPotionalMatch?()==false)
-            puts("There are no matches in the board. Let's fix that!! Refresh!!")
+       until(doesBoardHasAPotionalMatch?()==true)
             refresh()
+        
        end
+       puts("There are no matches in the board. Let's fix that!! Refresh!!")
+       initialAnyMatch?()
 
     end
     def printBaord()
         
         @board.each_with_index(){|row,i|
             row.each_with_index(){|element,j|
-                if(element.color=="Red"||element.color=="Blue")
+               begin
+                 if(element.color=="Red"||element.color=="Blue")
                     print(element,"  |   ")
                 else
                     print(element," |  ")
             
                 end
+                rescue NoMethodError =>e
+                  element=Orb.new()
+               
+               end
             }   
-            puts
+                puts
         }
-        
-        
-        # for row in @board
-        #     for element in row
+               
             
-        #     if (element.color=="Red"||element.color=="Blue")
-        #         print(element,"  |   ")
-        #     else
-        #         print(element," |  ")
-        #     end
-            
-        #     end
-        #     puts
-        # end
     end
+
     def initialAnyMatch?()
         @board.each_with_index(){|row,i|
             row.each_with_index(){|element,j|
             
             if (@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3]&&@board[i][j]==@board[i][j+4])
-               puts("Initial match at i:#{i} j:#{j}")
+            #    puts("Initial match at i:#{i} j:#{j}")
                 removeOrbs(j,i,j,"row",5)
                 
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3])
-                puts("Initial match at i:#{i} j:#{j}")
+                # puts("Initial match at i:#{i} j:#{j}")
 
                 removeOrbs(j,i,j,"row",4)
                 
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2])
-                puts("Initial match at i:#{i} j:#{j}")
+                # puts("Initial match at i:#{i} j:#{j}")
 
                 removeOrbs(j,i,j,"row",3)
                 
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i]&&@board[j][i]==@board[j+4][i])
-                puts("Initial match at i:#{i} j:#{j}")
+                # puts("Initial match at i:#{i} j:#{j}")
 
                 removeOrbs(j,i,i,"column",5)
                 
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i])
-                puts("Initial match at i:#{i} j:#{j}")
+                # puts("Initial match at i:#{i} j:#{j}")
 
                 removeOrbs(j,i,i,"column",4)
                 
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i])
-                puts("Initial match at i:#{i} j:#{j}")
+                # puts("Initial match at i:#{i} j:#{j}")
 
                 removeOrbs(j,i,i,"column",3)
                 
@@ -97,42 +93,42 @@ class Board
             if (@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3]&&@board[i][j]==@board[i][j+4])
                 @score+=5
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in row for 5 points")
+                # puts("Match at i:#{i} j:#{j} in row for 5 points")
                 removeOrbs(j,i,j,"row",5)
                 # puts("Reached the return")
                 return true
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2]&& @board[i][j]==@board[i][j+3])
                 @score+=4
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in row for 4 points")
+                # puts("Match at i:#{i} j:#{j} in row for 4 points")
                 removeOrbs(j,i,j,"row",4)
                 # puts("Reached the return")
                 return true
             elsif(@board[i][j]==@board[i][j+1]&&@board[i][j]==@board[i][j+2])
                 @score+=3
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in row for 3 points")
+                # puts("Match at i:#{i} j:#{j} in row for 3 points")
                 removeOrbs(j,i,j,"row",3)
                 # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i]&&@board[j][i]==@board[j+4][i])
                 @score+=5
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in column for 5 points")
+                # puts("Match at i:#{i} j:#{j} in column for 5 points")
                 removeOrbs(j,i,i,"column",5)
                 # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i]&&@board[j][i]==@board[j+3][i])
                 @score+=4 
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in column for 4 points")
+                # puts("Match at i:#{i} j:#{j} in column for 4 points")
                 removeOrbs(j,i,i,"column",4)
                 # puts("Reached the return")
                 return true
             elsif(@board[j][i]==@board[j+1][i]&&@board[j][i]==@board[j+2][i])
                 @score+=3
                 puts("Match!!")
-                puts("Match at i:#{i} j:#{j} in column for 3 points")
+                # puts("Match at i:#{i} j:#{j} in column for 3 points")
                 removeOrbs(j,i,i,"column",3)
                 # puts("Reached the return")
                 return true
@@ -241,13 +237,17 @@ class Board
             @board[row][column]=@board[row][column-1]
             @board[row][column-1]=temp
             
-            
             self.moveAllowed?(row,column,direction)
         end
-        # puts("Reached the return of the move")
+        until(doesBoardHasAPotionalMatch?()==true)
+            refresh()
+        
+       end
+       puts("There are no matches in the board. Let's fix that!! Refresh!!")
+       initialAnyMatch?()
     end
+
     def removeOrbsRowHelper(orbsStartIndex,rowIndex,amount)
-        # puts("In the begining of the rowHelper?")
         case amount
             when 3
                 if(@board[rowIndex+1]==nil)
@@ -391,12 +391,10 @@ class Board
                 end
                 
         end
-        # puts("Reached the return of rowHelper ")
         
 
     end
     def removeOrbsColumnHelper(orbsStartIndex,columnIndex,amount)
-        # puts("In the begining of the columnHelper?")
         case amount
         when 3
 
@@ -647,17 +645,17 @@ end
 
 board=Board.new();
 board.printBaord
-# 5.times(){
+5.times(){
 
  print ("Row ")
-# row=gets.chomp.to_i
-row=1
+row=gets.chomp.to_i
+# row=1
 print ("Column ")
-# column=gets.chomp.to_i
-column =4
+column=gets.chomp.to_i
+# column =4
 print("Direction ")
-# direction=gets.chomp
-direction="down"
+direction=gets.chomp
+# direction="down"
 board.move(row,column,direction)
 puts
 puts
@@ -667,5 +665,5 @@ board.printBaord
 puts
 puts
 puts
-# }
-puts board.score()
+}
+puts ("#{board.score()} Points!!")
